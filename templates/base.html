@@ -8,12 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
-  <nav class="sidebar">
-    <div class="sidebar-brand">💳 BankAgent</div>
-    <a href="{{ url_for('index') }}"        class="nav-link {% if request.endpoint=='index' %}active{% endif %}">📊 Tableau de bord</a>
-    <a href="{{ url_for('transactions') }}" class="nav-link {% if request.endpoint=='transactions' %}active{% endif %}">📄 Transactions</a>
-    <a href="{{ url_for('process_folder') }}" class="nav-link">🔄 Analyser dossier</a>
-    <a href="{{ url_for('export') }}"       class="nav-link">⬇️ Exporter CSV</a>
+  <nav class="sidebar" aria-label="Navigation principale">
+    <div class="sidebar-brand" aria-label="BankAgent">💳 BankAgent</div>
+    <a href="{{ url_for('index') }}"        class="nav-link {% if request.endpoint=='index' %}active{% endif %}" aria-current="{% if request.endpoint=='index' %}page{% else %}false{% endif %}">📊 Tableau de bord</a>
+    <a href="{{ url_for('transactions') }}" class="nav-link {% if request.endpoint=='transactions' %}active{% endif %}" aria-current="{% if request.endpoint=='transactions' %}page{% else %}false{% endif %}">📄 Transactions</a>
+    <a href="{{ url_for('process_folder') }}" class="nav-link" aria-label="Analyser dossier">🔄 Analyser dossier</a>
+    <a href="{{ url_for('export') }}"       class="nav-link" aria-label="Exporter CSV">⬇️ Exporter CSV</a>
   </nav>
 
   <main class="content">
