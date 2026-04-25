@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Tableau de bord</h1>
+
+<!-- Stats cards -->
+<div class="cards-row">
+  <div class="card card-blue">
+    <div class="card-label">Transactions</div>
+    <div class="card-value">{{ stats.total }}</div>
+  </div>
+  <div class="card card-red">
+    <div class="card-label">Total dépenses</div>
+    <div class="card-value">{{ "%.2f"|format(stats.total_debit) }} €</div>
+  </div>
+  <div class="card card-green">
+    <div class="card-label">Total revenus</div>
+    <div class="card-value">{{ "%.2f"|format(stats.total_credit) }} €</div>
+  </div>
+  <div class="card card-purple">
+    <div class="card-label">Solde net</div>
+    <div class="card-value">{{ "%.2f"|format(stats.total_credit + stats.total_debit) }} €</div>
+  </div>
+</div>
+
+<!-- Upload -->
+<div class="section">
+  <h2>Importer un relevé</h2>
+  <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="upload-form">
+    <input type="file" name="file" accept=".csv,.pdf" required class="file-input">
+    <button type="submit" class="btn btn-primary">Importer</button>
+  </form>
+  <p class="hint">Déposez aussi vos fichiers directement dans le dossier <code>uploads/</code> et cliquez sur « Analyser dossier ».</p>
+  {% if files %}
+  <div class="file-list">
+    <strong>Fichiers dans uploads/ :</strong>
+    {% for f in files %}<span class="file-tag">{{ f }}</span>{% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Charts row -->
+<div class="charts-row">
+  {% if monthly %}
+  <div class="chart-box">
+    <h2>Évolution mensuelle</h2>
+    <canvas id="monthlyChart"></canvas>
+  </div>
+  {% endif %}
+
+  {% if by_category %}
+  <div class="chart-box">
+    <h2>Dépenses par catégorie</h2>
+    <canvas id="categoryChart"></canvas>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Recent transactions -->
+{% if recent %}
+<div class="section">
+  <h2>Dernières transactions <a href="{{ url_for('transactions') }}" class="see-all">voir tout →</a></h2>
+  <table class="txn-table">
+    <thead><tr><th>Date</th><th>Description</th><th>Montant</th><th>Catégorie</th></tr></thead>
+    <tbody>
+      {% for t in recent %}
+      <tr>
+        <td class="date">{{ t.date }}</td>
+        <td>{{ t.description }}</td>
+        <td class="amount {{ 'negative' if t.amount < 0 else 'positive' }}">{{ "%.2f"|format(t.amount) }} €</td>
+        <td><span class="badge">{{ t.icon }} {{ t.category }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<script>
+{% if monthly %}
+const months = {{ monthly|map(attribute='month')|list|tojson }};
+const depenses = {{ monthly|map(attribute='depenses')|list|tojson }};
+const revenus  = {{ monthly|map(attribute='revenus')|list|tojson }};
+new Chart(document.getElementById('monthlyChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Dépenses', data: depenses.map(v => Math.abs(v)), backgroundColor: '#ef4444' },
+      { label: 'Revenus',  data: revenus,                        backgroundColor: '#22c55e' },
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top' } } }
+});
+{% endif %}
+
+{% if by_category %}
+const cats    = {{ by_category|selectattr('total','lt',0)|list|map(attribute='category')|list|tojson }};
+const totals  = {{ by_category|selectattr('total','lt',0)|list|map(attribute='total')|list|tojson }};
+const palette = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#6366f1','#ec4899','#84cc16','#14b8a6','#8b5cf6'];
+new Chart(document.getElementById('categoryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: cats,
+    datasets: [{ data: totals.map(v => Math.abs(v)), backgroundColor: palette }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'right' } } }
+});
+{% endif %}
+</script>
+{% endblock %}

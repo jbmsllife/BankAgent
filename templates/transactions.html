@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Transactions</h1>
+
+<!-- Filters -->
+<form method="get" class="filters">
+  <input type="text" name="search" value="{{ current_search }}" placeholder="Rechercher…" class="filter-input">
+  <select name="category" class="filter-select">
+    <option value="">Toutes les catégories</option>
+    {% for c in categories %}
+    <option value="{{ c }}" {% if c == current_category %}selected{% endif %}>{{ c }}</option>
+    {% endfor %}
+  </select>
+  <select name="month" class="filter-select">
+    <option value="">Tous les mois</option>
+    {% for m in months %}
+    <option value="{{ m }}" {% if m == current_month %}selected{% endif %}>{{ m }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit" class="btn btn-primary">Filtrer</button>
+  {% if current_search or current_category or current_month %}
+  <a href="{{ url_for('transactions') }}" class="btn btn-secondary">Réinitialiser</a>
+  {% endif %}
+</form>
+
+<p class="result-count">{{ transactions|length }} transaction(s)</p>
+
+{% if transactions %}
+<table class="txn-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Montant</th>
+      <th>Catégorie</th>
+      <th>Source</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in transactions %}
+    <tr id="row-{{ t.id }}">
+      <td class="date">{{ t.date }}</td>
+      <td class="desc">{{ t.description }}</td>
+      <td class="amount {{ 'negative' if t.amount < 0 else 'positive' }}">{{ "%.2f"|format(t.amount) }} €</td>
+      <td>
+        <form method="post" action="{{ url_for('recategorize', txn_id=t.id) }}" class="inline-form">
+          <select name="category" onchange="this.form.submit()" class="cat-select">
+            {% for c in categories %}
+            <option value="{{ c }}" {% if c == t.category %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </td>
+      <td class="source">{{ t.source_file }}</td>
+      <td>
+        <form method="post" action="{{ url_for('delete_transaction', txn_id=t.id) }}"
+              onsubmit="return confirm('Supprimer cette transaction ?')">
+          <button type="submit" class="btn-icon" title="Supprimer">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+  <p>Aucune transaction trouvée.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">Importer un relevé</a>
+</div>
+{% endif %}
+{% endblock %}
