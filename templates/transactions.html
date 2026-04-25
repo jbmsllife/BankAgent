@@ -5,15 +5,18 @@
 <h1 class="page-title">Transactions</h1>
 
 <!-- Filters -->
-<form method="get" class="filters">
-  <input type="text" name="search" value="{{ current_search }}" placeholder="Rechercher…" class="filter-input">
-  <select name="category" class="filter-select">
+<form method="get" class="filters" aria-label="Filtrer les transactions">
+  <label for="search-input" class="sr-only">Rechercher</label>
+  <input id="search-input" type="text" name="search" value="{{ current_search }}" placeholder="Rechercher…" class="filter-input">
+  <label for="category-select" class="sr-only">Catégorie</label>
+  <select id="category-select" name="category" class="filter-select">
     <option value="">Toutes les catégories</option>
     {% for c in categories %}
     <option value="{{ c }}" {% if c == current_category %}selected{% endif %}>{{ c }}</option>
     {% endfor %}
   </select>
-  <select name="month" class="filter-select">
+  <label for="month-select" class="sr-only">Mois</label>
+  <select id="month-select" name="month" class="filter-select">
     <option value="">Tous les mois</option>
     {% for m in months %}
     <option value="{{ m }}" {% if m == current_month %}selected{% endif %}>{{ m }}</option>
@@ -47,7 +50,8 @@
       <td class="amount {{ 'negative' if t.amount < 0 else 'positive' }}">{{ "%.2f"|format(t.amount) }} €</td>
       <td>
         <form method="post" action="{{ url_for('recategorize', txn_id=t.id) }}" class="inline-form">
-          <select name="category" onchange="this.form.submit()" class="cat-select">
+          <label for="cat-{{ t.id }}" class="sr-only">Catégorie pour {{ t.description }}</label>
+          <select name="category" id="cat-{{ t.id }}" onchange="this.form.submit()" class="cat-select" aria-label="Catégorie">
             {% for c in categories %}
             <option value="{{ c }}" {% if c == t.category %}selected{% endif %}>{{ c }}</option>
             {% endfor %}
@@ -58,7 +62,7 @@
       <td>
         <form method="post" action="{{ url_for('delete_transaction', txn_id=t.id) }}"
               onsubmit="return confirm('Supprimer cette transaction ?')">
-          <button type="submit" class="btn-icon" title="Supprimer">🗑️</button>
+          <button type="submit" class="btn-icon" aria-label="Supprimer {{ t.description }}">🗑️</button>
         </form>
       </td>
     </tr>

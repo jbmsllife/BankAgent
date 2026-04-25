@@ -1,0 +1,47 @@
+[
+  {
+    "minion_id": "pixel-perfecta",
+    "type": "suggestion",
+    "category": "accessibility",
+    "title": "Add Canvas Descriptions for Chart.js Charts",
+    "description": "The monthly and category charts use Chart.js canvas elements without accessible descriptions. Add `aria-label` to each canvas with a text summary of the data (e.g., 'Monthly revenue vs expenses chart: January 2000 euros revenue, 500 euros expenses').",
+    "priority": "medium",
+    "effort": "30 min"
+  },
+  {
+    "minion_id": "pixel-perfecta",
+    "type": "suggestion",
+    "category": "ux",
+    "title": "Add Loading States for Form Submissions",
+    "description": "File upload and category recategorization have no loading feedback. Add spinner/disabled state to buttons during submission so users know the action is processing.",
+    "priority": "medium",
+    "effort": "1 hour"
+  },
+  {
+    "minion_id": "pixel-perfecta",
+    "type": "suggestion",
+    "category": "ux",
+    "title": "Toast Notifications for Form Actions",
+    "description": "File uploads and deletions complete silently. Add toast/snackbar notifications ('File imported' or 'Transaction deleted') to confirm success to users.",
+    "priority": "low",
+    "effort": "2 hours"
+  },
+  {
+    "minion_id": "r2-ai-2",
+    "type": "suggestion",
+    "category": "feature",
+    "title": "Dark Mode Toggle",
+    "description": "Already has semantic color structure; implement dark mode preference with CSS custom properties or a toggle in settings. Would improve accessibility for users with light sensitivity.",
+    "priority": "low",
+    "effort": "2 hours"
+  },
+  {
+    "minion_id": "garde-fort",
+    "type": "suggestion",
+    "category": "security",
+    "title": "CSRF Token on Delete Form",
+    "description": "Delete transaction form uses simple onsubmit confirmation but no CSRF protection. Ensure Flask app has CSRF tokens on all state-changing forms.",
+    "priority": "high",
+    "effort": "30 min"
+  }
+]
