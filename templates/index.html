@@ -46,14 +46,14 @@
   {% if monthly %}
   <div class="chart-box">
     <h2>Évolution mensuelle</h2>
-    <canvas id="monthlyChart"></canvas>
+    <canvas id="monthlyChart" aria-label="Graphique de l'évolution mensuelle des revenus et dépenses"></canvas>
   </div>
   {% endif %}
 
   {% if by_category %}
   <div class="chart-box">
     <h2>Dépenses par catégorie</h2>
-    <canvas id="categoryChart"></canvas>
+    <canvas id="categoryChart" aria-label="Graphique des dépenses par catégorie"></canvas>
   </div>
   {% endif %}
 </div>
