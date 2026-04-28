@@ -168,11 +168,21 @@ Completed comprehensive visual and accessibility audit of BankAgent's UI. **Crit
 
 ---
 
+## Follow-up Improvements (Post Audit)
+
+### ✅ Completed
+
+#### Canvas Descriptions (Commit 4b8dc70)
+- **Before:** Monthly and category charts had no aria-labels
+- **After:** Added `aria-label` attributes to both canvas elements
+  - Monthly chart: "Graphique de l'évolution mensuelle des revenus et dépenses"
+  - Category chart: "Graphique des dépenses par catégorie"
+- **Impact:** Screen reader users can now identify chart types and purpose
+
 ## Recommendations for Future Work
 
-- [ ] Add Chart.js canvas descriptions (aria-label on canvas or fallback <table>)
-- [ ] Implement loading spinners for file upload / category recategorization
-- [ ] Add toast notifications for form submissions
+- [ ] Implement loading spinners for file upload / category recategorization (requires JS)
+- [ ] Add toast notifications for form submissions (requires JS framework)
 - [ ] Test with actual screen readers (VoiceOver on Mac/Safari, NVDA on Windows)
 - [ ] Implement dark mode toggle (already accessible infrastructure in place)
 
