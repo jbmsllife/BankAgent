@@ -2,15 +2,6 @@
   {
     "minion_id": "pixel-perfecta",
     "type": "suggestion",
-    "category": "accessibility",
-    "title": "Add Canvas Descriptions for Chart.js Charts",
-    "description": "The monthly and category charts use Chart.js canvas elements without accessible descriptions. Add `aria-label` to each canvas with a text summary of the data (e.g., 'Monthly revenue vs expenses chart: January 2000 euros revenue, 500 euros expenses').",
-    "priority": "medium",
-    "effort": "30 min"
-  },
-  {
-    "minion_id": "pixel-perfecta",
-    "type": "suggestion",
     "category": "ux",
     "title": "Add Loading States for Form Submissions",
     "description": "File upload and category recategorization have no loading feedback. Add spinner/disabled state to buttons during submission so users know the action is processing.",
